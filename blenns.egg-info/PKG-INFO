@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: blenns
+Version: 0.1
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: yfinance
+Requires-Dist: matplotlib
+Requires-Dist: scikit-learn
+Requires-Dist: tensorflow
+Requires-Dist: mplfinance
+Requires-Dist: Pillow
+Dynamic: requires-dist

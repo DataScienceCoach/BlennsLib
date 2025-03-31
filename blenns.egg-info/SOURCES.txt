@@ -1,0 +1,6 @@
+setup.py
+blenns.egg-info/PKG-INFO
+blenns.egg-info/SOURCES.txt
+blenns.egg-info/dependency_links.txt
+blenns.egg-info/requires.txt
+blenns.egg-info/top_level.txt
