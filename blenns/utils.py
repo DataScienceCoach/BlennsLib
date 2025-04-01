@@ -1,5 +1,5 @@
 # utils.py
-from sklearn.metrics import roc_curve, auc  # <-- THIS IS THE CRITICAL FIX
+from sklearn.metrics import roc_curve, auc  
 import matplotlib.pyplot as plt
 import io
 import numpy as np
