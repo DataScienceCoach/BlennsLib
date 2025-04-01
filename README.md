@@ -1,5 +1,5 @@
 # **Blenns Library** 📈  
-*A Deep Learning Stock Prediction Tool with Candlestick Pattern Recognition*  
+*A Deep Learning Stock Prediction Tool with Candlestick Images and Volume*  
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## **Overview**  
 Blenns is a Python library that predicts stock price movements using:  
-✅ **Convolutional Neural Networks (CNNs)** for candlestick pattern analysis  
+✅ **Convolutional Neural Networks (CNNs)** for candlestick Image analysis  
 ✅ **LSTM + Attention** for time-series forecasting  
 ✅ **Volume data integration** for improved accuracy  
 
