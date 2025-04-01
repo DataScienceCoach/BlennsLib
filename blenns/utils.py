@@ -1,4 +1,5 @@
 # utils.py
+from sklearn.metrics import roc_curve, auc  # <-- THIS IS THE CRITICAL FIX
 import matplotlib.pyplot as plt
 import io
 import numpy as np
@@ -6,6 +7,7 @@ from PIL import Image
 from mplfinance.original_flavor import candlestick_ohlc
 from matplotlib.dates import date2num
 
+# [Keep all your existing functions below...]
 def encode_candle_chart(data):
     encoded_images = []
     volumes = []
@@ -43,11 +45,12 @@ def plot_training_validation_loss(history):
 
 def plot_roc_curve(model, X_test_img, X_test_vol, y_test):
     y_pred_probs = model.predict([X_test_img, X_test_vol])
-    fpr, tpr, thresholds = roc_curve(y_test, y_pred_probs)
-    roc_auc = auc(fpr, tpr)
-
+    fpr, tpr, thresholds = roc_curve(y_test, y_pred_probs)  # Now works
+    roc_auc = auc(fpr, tpr)  # Now works
+    
     plt.figure()
-    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
+    plt.plot(fpr, tpr, color='darkorange', lw=2, 
+             label=f'ROC curve (area = {roc_auc:.2f})')
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
