@@ -128,18 +128,21 @@ plt.show()
 
 ```python
 %matplotlib inline
+import matplotlib.pyplot as plt
 from blenns.model import BlennsModel
-from blenns.utils import plot_predicted_candlestick_image
+from blenns.utils import plot_predicted_candlestick_image  # Import visualization function
 
-# Initialize with pre-trained weights
-bm = BlennsModel(pretrained=True)  # Critical parameter
+bm = BlennsModel()
+data = bm.fetch_data("AAPL")
 
-# Fetch data and predict
-data = bm.fetch_data("AAPL")  # Apple stock example
+bm.train(data, epochs=1)
+
+#bm.predict_next_day()
+
+# Make prediction and show visual
 prediction = bm.predict_next_day()
-
-# Visualize prediction
-plot_predicted_candlestick_image(bm.X_test_img[:1])
+plt.figure(figsize=(6, 6))
+plot_predicted_candlestick_image(bm.X_test_img[:1])  # Visualize prediction
 plt.show()
 ```
 
