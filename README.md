@@ -63,38 +63,54 @@ pip install .
 ```python
 %matplotlib inline
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, classification_report  # Added critical imports
 from blenns.model import BlennsModel
 from blenns.utils import (encode_candle_chart, 
-                        display_first_two_images,
-                        plot_training_validation_loss,
-                        plot_roc_curve,
-                        plot_predicted_candlestick_image)
+                         display_first_two_images,
+                         plot_training_validation_loss,
+                         plot_roc_curve,
+                         plot_predicted_candlestick_image)
 
-# Initialize model
+# 1. Initialize and fetch data
 bm = BlennsModel()
-data = bm.fetch_data("NVDA")  # Example: NVIDIA stock
+data = bm.fetch_data("NVDA")  # Try "TSLA", "AAPL", etc.
 
-# 1. Visualize input patterns
-plt.figure(figsize=(12,4))
+# 2. Visualize candlestick patterns
+plt.figure(figsize=(12, 4))
 encoded_images, _ = encode_candle_chart(data)
 display_first_two_images(encoded_images)
+plt.tight_layout()
 plt.show()
 
-# 2. Train model (10-50 epochs recommended)
+# 3. Train model
 bm.train(data, epochs=10)
 
-# 3. View training metrics
+# 4. View training performance
+plt.figure(figsize=(10, 4))
 plot_training_validation_loss(bm.history)
+plt.tight_layout()
 plt.show()
 
-# 4. Evaluate performance
+# 5. Evaluate model
+plt.figure(figsize=(10, 4))
 plot_roc_curve(bm.model, bm.X_test_img, bm.X_test_vol, bm.y_test)
+plt.tight_layout()
 plt.show()
 
-# 5. Prediction with visual
+# 6. Model evaluation metrics
+print("\n=== Model Evaluation ===")
+y_pred = (bm.model.predict([bm.X_test_img, bm.X_test_vol]) > 0.5).astype(int)
+print("Confusion Matrix:")
+print(confusion_matrix(bm.y_test, y_pred))
+print("\nClassification Report:")
+print(classification_report(bm.y_test, y_pred))
+
+# 7. Final prediction with visual
+print("\n=== Final Prediction ===")
 prediction = bm.predict_next_day()
+plt.figure(figsize=(6, 6))
 plot_predicted_candlestick_image(bm.X_test_img[:1])
+plt.tight_layout()
 plt.show()
 ```
 
