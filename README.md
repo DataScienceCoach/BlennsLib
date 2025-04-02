@@ -1,7 +1,5 @@
-# **Blenns Architecture Model 📈**  
-*Blended Neural Networks for Candlestick Pattern Prediction*  
-Blenns Library 
-AI-Powered Stock Market Prediction with Candlestick Pattern Recognition
+# **Blenns Architecture Library 📈**  
+*Blended Neural Networks for Next Day Candlestick Image Prediction*  
 
 ---
 
