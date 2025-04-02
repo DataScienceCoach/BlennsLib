@@ -1,51 +1,53 @@
-Here's the corrected **README.md** file with guaranteed working code examples:
-
-# **Blenns Library** 📈  
-*AI-Powered Stock Market Prediction with Candlestick Pattern Recognition*
+# **Blenns Architecture Model**  
+*Blended Neural Networks for Candlestick Pattern Prediction*  
 
 ---
 
 ## **Table of Contents**  
 1. [Overview](#overview)  
-2. [Installation](#installation)  
-3. [Quick Start](#quick-start)  
+2. [Key Features](#key-features)  
+3. [Installation](#installation)  
 4. [Full Functionality Mode](#full-functionality-mode)  
 5. [Limited Functionality Mode](#limited-functionality-mode)  
-6. [Troubleshooting](#troubleshooting)  
-7. [License](#license)  
+6. [Model Architecture](#model-architecture)  
+7. [Troubleshooting](#troubleshooting)  
+8. [License](#license)  
 
 ---
 
 ## **Overview**  
-Blenns combines computer vision and time-series analysis to predict stock movements using:
+Blenns is an advanced deep learning framework that predicts next-day candlestick patterns by analyzing:  
 
-✔ **Candlestick Pattern Recognition** (CNN)  
-✔ **Volume-Weighted Predictions** (LSTM + Attention)  
-✔ **Visual Analytics** for model interpretation  
+🟢 **OHLC Images** (Open-High-Low-Close) processed as 64x64 RGB matrices  
+📊 **Trading Volumes** integrated as auxiliary input channels  
+🧠 **Hybrid CNN-LSTM-Attention** architecture for spatiotemporal pattern recognition  
 
-**Two Operational Modes:**  
-🔧 **Full Mode** - Train custom models (GPU recommended)  
-⚡ **Limited Mode** - Fast predictions (CPU compatible)  
+---
+
+## **Key Features**  
+
+| Feature | Full Mode | Limited Mode |  
+|---------|----------|-------------|  
+| Custom Model Training | ✅ | ❌ |  
+| Pre-trained Predictions | ✅ | ✅ |  
+| Candlestick Visualization | ✅ | ✅ |  
+| ROC Curve Analysis | ✅ | ❌ |  
+| Training Metrics | ✅ | ❌ |  
+| Execution Time | 2-5 mins | <30 secs |  
 
 ---
 
 ## **Installation**  
 
-### **For Google Colab (Recommended)**
+### **1. Google Colab (Recommended)**  
 ```python
-# Clean installation with runtime restart
-!rm -rf BlennsLib
 !git clone https://github.com/DataScienceCoach/BlennsLib
 %cd BlennsLib
 !pip install -r requirements.txt
 !pip install .
-
-# Restart runtime after installation
-from IPython.display import display, Javascript
-display(Javascript('IPython.notebook.execute_cell_range(IPython.notebook.get_selected_index()+1, IPython.notebook.ncells())'))
 ```
 
-### **For Local Python Environment**
+### **2. Local Python Environment**  
 ```bash
 git clone https://github.com/DataScienceCoach/BlennsLib.git
 cd BlennsLib
@@ -55,107 +57,119 @@ pip install .
 
 ---
 
-## **Quick Start**  
-
-```python
-%matplotlib inline
-from blenns.model import BlennsModel
-
-# Initialize and get data
-bm = BlennsModel()
-data = bm.fetch_data("AAPL")  # Try "TSLA", "MSFT", etc.
-
-# Make prediction
-prediction = bm.predict_next_day()
-print(f"Tomorrow's prediction: {'↑ BULLISH' if prediction > 0.5 else '↓ BEARISH'}")
-```
-
----
-
 ## **Full Functionality Mode**  
+*For complete model training and evaluation*  
 
-### **Complete Workflow**
 ```python
 %matplotlib inline
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report
 from blenns.model import BlennsModel
 from blenns.utils import (encode_candle_chart, 
-                         display_first_two_images,
-                         plot_training_validation_loss,
-                         plot_roc_curve)
+                        display_first_two_images,
+                        plot_training_validation_loss,
+                        plot_roc_curve,
+                        plot_predicted_candlestick_image)
 
-# 1. Initialize and fetch data
+# Initialize model
 bm = BlennsModel()
-data = bm.fetch_data("NVDA")  # NVIDIA stock example
+data = bm.fetch_data("NVDA")  # Example: NVIDIA stock
 
-# 2. Visualize candlestick patterns
+# 1. Visualize input patterns
+plt.figure(figsize=(12,4))
 encoded_images, _ = encode_candle_chart(data)
 display_first_two_images(encoded_images)
+plt.show()
 
-# 3. Train model (10-50 epochs recommended)
+# 2. Train model (10-50 epochs recommended)
 bm.train(data, epochs=10)
 
-# 4. View training performance
+# 3. View training metrics
 plot_training_validation_loss(bm.history)
+plt.show()
 
-# 5. Evaluate model
+# 4. Evaluate performance
 plot_roc_curve(bm.model, bm.X_test_img, bm.X_test_vol, bm.y_test)
+plt.show()
 
-# 6. Make prediction
-bm.predict_next_day()
+# 5. Prediction with visual
+prediction = bm.predict_next_day()
+plot_predicted_candlestick_image(bm.X_test_img[:1])
+plt.show()
 ```
 
-**Key Features:**  
-- Customizable training epochs  
-- Visual feedback at each stage  
-- ROC curve for accuracy assessment  
+**Outputs:**  
+- First 2 candlestick patterns  
+- Training/validation loss curves  
+- ROC curve analysis  
+- Confusion matrix & classification report  
+- Predicted candlestick visualization  
 
 ---
 
 ## **Limited Functionality Mode**  
+*For quick predictions without training*  
 
-### **Pre-Trained Predictions**
 ```python
+%matplotlib inline
 from blenns.model import BlennsModel
+from blenns.utils import plot_predicted_candlestick_image
 
-bm = BlennsModel()
-data = bm.fetch_data("GOOGL")  # Alphabet (Google)
+# Initialize with pre-trained weights
+bm = BlennsModel(pretrained=True)  # Critical parameter
 
-# Fast prediction without training
-prediction = bm.predict_next_day(pretrained=True)
-print(f"Quick Prediction: {'BUY' if prediction > 0.5 else 'SELL'}")
+# Fetch data and predict
+data = bm.fetch_data("AAPL")  # Apple stock example
+prediction = bm.predict_next_day()
+
+# Visualize prediction
+plot_predicted_candlestick_image(bm.X_test_img[:1])
+plt.show()
 ```
 
-### **Data Visualization Only**
-```python
-from blenns.utils import display_first_two_images
+**Advantages:**  
+⚡ No training required  
+🖼️ Immediate candlestick visualization  
+📉 Works with any US stock ticker  
 
-data = bm.fetch_data("AMZN")  # Amazon stock
-display_first_two_images(data)  # View candle patterns
+---
+
+## **Model Architecture**  
+
+```mermaid
+graph TD
+    A[Input Images] --> B[TimeDistributed CNN]
+    C[Volume Data] --> D[LSTM-Attention]
+    B --> D
+    D --> E[Fully Connected]
+    E --> F[Sigmoid Output]
 ```
+
+**Technical Specifications:**  
+- **CNN Layers**: 2x (Conv2D + MaxPooling)  
+- **LSTM Units**: 50 with Attention mechanism  
+- **Output Activation**: Sigmoid (0=Bearish, 1=Bullish)  
+- **Input Shape**: (1, 64, 64, 3) for images + (1,) for volume  
 
 ---
 
 ## **Troubleshooting**  
 
-| Error | Solution |
-|-------|----------|
-| `ModuleNotFoundError` | Run `!pip install --force-reinstall .` |
-| Plots not displaying | Ensure `%matplotlib inline` is used |
-| ROC curve errors | Verify `sklearn.metrics` is imported in utils.py |
-| Slow performance | Use Colab with GPU accelerator |
+| Error | Solution |  
+|-------|----------|  
+| `ModuleNotFoundError` | Run `!pip install --force-reinstall .` |  
+| Plots not showing | Add `%matplotlib inline` and `plt.show()` |  
+| CUDA errors | Restart runtime and check GPU availability |  
+| Shape mismatches | Verify `data.shape == (N, 64, 64, 3)` |  
 
 ---
 
 ## **License**  
 MIT License - Free for academic and commercial use  
 
-**Contribution Guidelines:**  
-- Report issues on GitHub  
-- Submit PRs to the development branch  
-
----
-**Note:** Predictions are for educational purposes only. Past performance ≠ future results.  
+**Repository**: [github.com/DataScienceCoach/BlennsLib](https://github.com/DataScienceCoach/BlennsLib)  
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/DataScienceCoach/BlennsLib/blob/main/examples/demo.ipynb)  
 
-This version ensures all code blocks are tested and functional in both Colab and local environments. The instructions are streamlined for ease of use while maintaining technical accuracy.
+---
+**Disclaimer**: Predictions are for research purposes only. Past performance ≠ future results.
