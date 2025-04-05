@@ -22,7 +22,7 @@ class BlennsModel:
 
     def fetch_data(self, ticker="TLRY"):
         """Get stock data from Yahoo Finance"""
-        data = yf.download(ticker, start="2010-01-01", end=datetime.now().strftime('%Y-%m-%d'), interval="1d")
+        data = yf.download(ticker, start="2024-01-01", end=datetime.now().strftime('%Y-%m-%d'), interval="1d")
         return data.reset_index()
 
     def normalize_data(self, images, volumes):
