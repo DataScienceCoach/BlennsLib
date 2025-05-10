@@ -16,7 +16,7 @@
 ---
 
 ## **Overview**  
-Blenns is an advanced deep learning framework that predicts next-day candlestick patterns by analyzing:  
+Blenns is an advanced deep learning framework that predicts next-day candlestick Image by analyzing:  
 
 🟢 **OHLC Images** (Open-High-Low-Close) processed as 64x64 RGB matrices  
 📊 **Trading Volumes** integrated as auxiliary input channels  
